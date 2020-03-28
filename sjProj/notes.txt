@@ -1,0 +1,8 @@
+﻿
+
+to do : 
+
+	-	GLOBALITY.cs > class : _Configs > proto : public static void CheckForUpdates(Version currentV);
+
+
+

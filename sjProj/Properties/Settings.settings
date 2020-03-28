@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="sjProj.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PinnedTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ContainerBgColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">45, 45, 45</Value>
+    </Setting>
+    <Setting Name="TitleBarColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">28, 28, 28</Value>
+    </Setting>
+    <Setting Name="LeftPanelColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">35, 35, 35</Value>
+    </Setting>
+    <Setting Name="settings_link" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://x544d.github.io/setting.json</Value>
+    </Setting>
+    <Setting Name="app_title" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">P U X Y - A D M I N I S T R A T I O N</Value>
+    </Setting>
+    <Setting Name="app_version_link" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://x544d.github.io/version.txt</Value>
+    </Setting>
+    <Setting Name="current_lang" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en</Value>
+    </Setting>
+    <Setting Name="ip_local" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ip_global" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,17 @@
+{
+  "en": {
+    "menu1": "FIRST PAGE",
+    "menu2": "second PAGE",
+    "menu3": "third PAGE",
+    "menu4": "4th PAGE"
+
+  },
+
+
+  "fr": {
+    "menu1": "1ere PAGE",
+    "menu2": "2eme PAGE",
+    "menu3": "3eme PAGE",
+    "menu4": "4eme PAGE"
+  }
+}

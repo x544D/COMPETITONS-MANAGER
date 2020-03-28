@@ -1,0 +1,12 @@
+{
+  "app_lang"        : "en",
+  "first_time_used" : null,
+  "last_time_used"  : null,
+  "version"         : 1.0,
+  "theme"           : "dark",
+  "main_monitor"    : 0,
+  "start_pinned_top": false,
+  "lock_password"   : false,
+  "password"        : null,
+  "start_menu"      : 0
+}
