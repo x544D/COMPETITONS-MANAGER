@@ -133,5 +133,17 @@ namespace sjProj.Properties {
                 this["ip_global"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isStretched {
+            get {
+                return ((bool)(this["isStretched"]));
+            }
+            set {
+                this["isStretched"] = value;
+            }
+        }
     }
 }

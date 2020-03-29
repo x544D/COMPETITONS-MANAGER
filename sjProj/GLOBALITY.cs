@@ -15,10 +15,13 @@ using System.Net.Sockets;
 using System.Globalization;
 using Newtonsoft.Json.Linq;
 
+
 namespace sjProj
 {
+    
     static class _Configs
     {
+
 
         private static string settings_File_path = Application.LocalUserAppDataPath + @"\settings.json";
         private static string strings_File_path = Application.LocalUserAppDataPath + @"\strings.json";
@@ -79,9 +82,11 @@ namespace sjProj
                     // get the json string
                     string result = await get_settings(Properties.Settings.Default.settings_link);
 
+                    // more check
                     if (result is null)
                     {
                         MessageBox.Show(GetJsonValueByKey("invalid_settings_file"));
+                        // to do in Exit()
                         if (File.Exists(settings_File_path)) File.Delete(settings_File_path);
                         Environment.Exit(-2);
                     }
@@ -185,7 +190,8 @@ namespace sjProj
                 JObject jo = JObject.Parse(File.ReadAllText(strings_File_path));
                 jo = JObject.Parse(jo[lang].ToString());
 
-
+                // sb = null = ""
+                
                 keys.ForEach(key =>
                 {
                     if (sb.ToString() != string.Empty) sb.Append(separator);
@@ -207,6 +213,7 @@ namespace sjProj
         // Get IpV4 INFOS
         public static List<IPAddress> Get_Addresses()
         {
+            // http://icanhazip.com
             try
             {
                 WebClient client = new WebClient();
@@ -269,48 +276,13 @@ namespace sjProj
 
         Properties.Settings settings = new Properties.Settings();
 
+        int leftPanelFullWidth = 200; // when the mouse enters
+        int leftPanelMiniWidth = 100; // when the mouse is out of the leftPanel
+
 
         #endregion 
 
-        /// <summary>
-        ///             -> Global EVENTS !
-        /// </summary>
 
-        #region TitleBarPanel
-
-        bool isMoving    = false;
-        Point   LocOnclick;
-
-
-        private void md(object o , MouseEventArgs ev)
-        {
-            if (!settings.PinnedTop)
-            {
-                isMoving = true;
-                LocOnclick = ev.Location;
-            }
-        }
-        private void mu(object o, MouseEventArgs ev)
-        {
-            isMoving = false;
-        }
-        private void mm(object o, MouseEventArgs ev)
-        {
-            if (!settings.PinnedTop)
-            { 
-                if (isMoving)
-                {
-                    Control c = ((Panel)o).Parent;
-
-                    int dx = LocOnclick.X - ev.Location.X;
-                    int dy = LocOnclick.Y - ev.Location.Y;
-
-                    c.Location = new Point(c.Location.X - dx, c.Location.Y - dy);
-                }
-            }
-        }
-
-        #endregion
 
         /// <summary>
         ///         -> Attrs | Controls
@@ -324,7 +296,7 @@ namespace sjProj
 
         private Panel TitlePanel;
         private Panel LeftSidePanel;
-        private Panel ContainerPanel;
+        public static Panel ContainerPanel;
 
         private Label title;
 
@@ -337,6 +309,11 @@ namespace sjProj
         private _MenuItem TestItem2;
         private _MenuItem TestItem3;
         private _MenuItem TestItem4;
+
+        private PictureBox MenuIcon;
+
+        private Panel SearchInputContainer;
+        private TextBox SearchInput;
 
 
         struct Vector2
@@ -352,6 +329,47 @@ namespace sjProj
             public int w;
             public int h;
         };
+        #endregion
+
+
+        /// <summary>
+        ///             -> Global EVENTS !
+        /// </summary>
+
+        #region TitleBarPanel
+
+        bool isMoving = false;
+        Point LocOnclick;
+
+
+        private void md(object o, MouseEventArgs ev)
+        {
+            if (!settings.PinnedTop)
+            {
+                isMoving = true;
+                LocOnclick = ev.Location;
+            }
+        }
+        private void mu(object o, MouseEventArgs ev)
+        {
+            isMoving = false;
+        }
+        private void mm(object o, MouseEventArgs ev)
+        {
+            if (!settings.PinnedTop)
+            {
+                if (isMoving)
+                {
+                    Control c = ((Panel)o).Parent;
+
+                    int dx = LocOnclick.X - ev.Location.X;
+                    int dy = LocOnclick.Y - ev.Location.Y;
+
+                    c.Location = new Point(c.Location.X - dx, c.Location.Y - dy);
+                }
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -371,6 +389,7 @@ namespace sjProj
             screen.h = h;
 
             this.main_form = main_form;
+
         }
 
         
@@ -402,6 +421,7 @@ namespace sjProj
                 main_form.TopMost = true;
                 main_form.Location = new Point(0, 0);
                 settings.PinnedTop = true;
+                MenuIcon.Enabled = false;
             }
             else
             {
@@ -410,8 +430,10 @@ namespace sjProj
                 main_form.TopMost = false;
                 main_form.Location = new Point(0, 0);
                 settings.PinnedTop = false;
+                MenuIcon.Enabled = true;
             }
         }
+
 
         public void builder()
         {
@@ -433,7 +455,7 @@ namespace sjProj
 
                 TitlePanel = new Panel()
                 {
-                    Bounds = new Rectangle(_Tracking.x, _Tracking.y, screen.w, 50),
+                    Bounds = new Rectangle(_Tracking.x, _Tracking.y, screen.w, 70),
                     BackColor = settings.TitleBarColor,
                     Parent = main_form,
                 };
@@ -445,12 +467,70 @@ namespace sjProj
                 TitlePanel.DoubleClick += (o, a) =>  main_form.Location = new Point(0, 0); 
                 //TitlePanel.MouseDoubleClick += (o, a) => main_form.Location = new Point(0, 0);
              
-                _Tracking.y += 50;
+                _Tracking.y += 70;
 
 
                 // Title bar sub COntrols region
 
                 #region Controls_TitlePanel
+
+                MenuIcon = new PictureBox
+                {
+                    Parent = TitlePanel,
+                    Width = 20,
+                    Height = 20,
+                    Location = new Point( leftPanelMiniWidth / 2 - 10 , TitlePanel.Height / 2 - (25 / 2)),
+                    Image = Properties.Resources.Menu2,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Cursor = Cursors.Hand,
+                };
+
+
+                // _working // MenuIcon Click Event __x
+                MenuIcon.Click += (o, a) =>
+                {
+                    try
+                    {
+                        if (!settings.PinnedTop && !settings.isStretched)
+                        {
+                            LeftSidePanel.Width = leftPanelFullWidth;
+                            settings.isStretched = true;
+
+                            foreach (Control ctrl in LeftSidePanel.Controls)
+                            {
+                                if (ctrl is _MenuItem)
+                                {
+                                    _MenuItem menu = ctrl as _MenuItem;
+                                    menu.Height = 50;
+                                    menu.icon.Bounds = new Rectangle(new Point(10, 50 / 2 - 10), new Size(20, 20));
+                                    menu.menuItem_title.Bounds = new Rectangle(new Point(15,50/2 - 12 / 2),
+                                        new Size(menu.Width,12));
+                                }
+                            }
+
+                        }
+                        else if (settings.isStretched)
+                        {
+                            LeftSidePanel.Width = leftPanelMiniWidth;
+                            settings.isStretched = false;
+
+                            foreach (Control ctrl in LeftSidePanel.Controls)
+                            {
+                                if (ctrl is _MenuItem)
+                                {
+                                    _MenuItem menu = ctrl as _MenuItem;
+                                    menu.Height = 100;
+                                    menu.icon.Bounds = new Rectangle(new Point(menu.Width / 2 - 13, menu.Height / 2 - 26),
+                                        new Size(26, 26));
+
+                                    menu.menuItem_title.Bounds = new Rectangle(new Point(0, menu.Height / 2 + 5),
+                                        new Size(menu.Width, 12));
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception) { }
+                };
 
 
                 icon = new PictureBox()
@@ -460,7 +540,7 @@ namespace sjProj
                     Width = 25,
                     Height = 25,
                     Parent = TitlePanel,
-                    Location = new Point(10 , TitlePanel.Height / 2 - (25/2))
+                    Location = new Point(100 + MenuIcon.Width , TitlePanel.Height / 2 - (25/2))
                 };
 
                 title = new Label()
@@ -469,7 +549,7 @@ namespace sjProj
                     Text = settings.app_title,
                     ForeColor = Color.FromArgb(255, 157, 157, 157),
                     BackColor = settings.TitleBarColor,
-                    Location = new Point(15 + icon.Width , TitlePanel.Height / 2 - ( 12 / 2)),
+                    Location = new Point(110 + MenuIcon.Width + icon.Width , TitlePanel.Height / 2 - ( 12 / 2)),
                     Parent = TitlePanel
                 };
 
@@ -514,15 +594,39 @@ namespace sjProj
 
                 #endregion
 
+
+                // Search TextBox
+
+                SearchInputContainer = new Panel {
+                    Parent = TitlePanel,
+                    Bounds = new Rectangle(new Point(400, TitlePanel.Height / 2 - 15), new Size(500, 30)),
+                    BackColor = settings.ContainerBgColor,
+                };
+
+                SearchInput = new TextBox {
+
+                    Parent = SearchInputContainer,
+                    BorderStyle = BorderStyle.None,
+                    Font = new Font("tahoma", 25f, FontStyle.Regular, GraphicsUnit.Pixel),
+                    BackColor = settings.ContainerBgColor,
+                    ForeColor = Color.FromArgb(255 ,80, 80, 80),
+                    Dock = DockStyle.Fill
+
+                };
+
+
+
                 //// LEFT PANEL !
 
                 LeftSidePanel = new Panel()
                 {
-                    Bounds      = new Rectangle(_Tracking.x, _Tracking.y, 200, screen.h),
-                    BackColor   = settings.LeftPanelColor,
+                    Bounds      = new Rectangle(_Tracking.x, _Tracking.y, leftPanelMiniWidth , screen.h),
+                    BackColor   = settings.TitleBarColor,
                     Parent      = main_form,
+                    Name        = "LeftPanel"
                 };
-                
+
+
 
                 _Tracking.x += 200;
                 _Tracking.y += 0;
@@ -532,7 +636,7 @@ namespace sjProj
 
                 #region LeftPanel_menuItems
                
-                TestItem = new _MenuItem(50, LeftSidePanel.Width, Color.FromArgb(255, 60, 60, 60), _Configs.GetJsonValueByKey("menu4").ToString(), Properties.Resources.icon)
+                TestItem = new _MenuItem(100, leftPanelMiniWidth,/* Color.FromArgb(255, 60, 60, 60)*/ Color.Transparent, _Configs.GetJsonValueByKey("menu4").ToString(), Properties.Resources.settings)
                 {
                     Parent = LeftSidePanel,
                     Dock = DockStyle.Top,
@@ -540,25 +644,36 @@ namespace sjProj
 
 
 
-                TestItem2 = new _MenuItem(50, LeftSidePanel.Width, Color.FromArgb(255, 60, 60, 60), _Configs.GetJsonValueByKey("menu3").ToString(), Properties.Resources.icon)
+                TestItem2 = new _MenuItem(100, leftPanelMiniWidth,/* Color.FromArgb(255, 60, 60, 60)*/ Color.Transparent, _Configs.GetJsonValueByKey("menu3").ToString(), Properties.Resources.cameras)
                 {
                     Parent = LeftSidePanel,
                     Dock = DockStyle.Top,
                 };
 
 
-                TestItem3 = new _MenuItem(50, LeftSidePanel.Width, Color.FromArgb(255, 60, 60, 60), _Configs.GetJsonValueByKey("menu2").ToString(), Properties.Resources.icon)
+
+                TestItem3 = new _MenuItem(100, leftPanelMiniWidth, /* Color.FromArgb(255, 60, 60, 60)*/ Color.Transparent, _Configs.GetJsonValueByKey("menu2").ToString(), Properties.Resources.users)
                 {
                     Parent = LeftSidePanel,
                     Dock = DockStyle.Top,
                 };
 
 
-                TestItem4 = new _MenuItem(50, LeftSidePanel.Width, Color.FromArgb(255, 60, 60, 60), _Configs.GetJsonValueByKey("menu1").ToString(), Properties.Resources.icon)
+
+                TestItem4 = new _MenuItem(100, leftPanelMiniWidth,/* Color.FromArgb(255, 60, 60, 60)*/ Color.Transparent, _Configs.GetJsonValueByKey("menu1").ToString(), Properties.Resources.comps)
                 {
                     Parent = LeftSidePanel,
                     Dock = DockStyle.Top,
                 };
+
+                //MenuIconPanel = new Panel
+                //{
+                //    Parent = TitlePanel,
+                //    Dock = DockStyle.Left,
+                //    Height = 30,
+                //    BackColor = Color.Red,
+                //};
+
 
 
 

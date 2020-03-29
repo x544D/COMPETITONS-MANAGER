@@ -17,6 +17,8 @@ namespace sjProj
 
         public Form1()
         {
+            BackColor = Properties.Settings.Default.ContainerBgColor;
+
             //Check if connected !
 
             if (!_Configs.isConnected())
@@ -75,7 +77,7 @@ namespace sjProj
             main_form = this;
             SB = new SAAD_BUILDER(ref main_form, x, y, w, h);
             SB.builder();
-  
+
 
 
 

@@ -132,6 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="notes.txt" />
+    <None Include="Resources\Menu2.png" />
+    <None Include="Resources\Menu1.png" />
+    <None Include="Resources\menu.png" />
+    <None Include="Resources\users.png" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\comps.png" />
+    <None Include="Resources\cameras.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

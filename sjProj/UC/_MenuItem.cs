@@ -12,9 +12,10 @@ namespace sjProj.UC
 {
     public partial class _MenuItem : UserControl
     {
-        private PictureBox icon;
-        private Label menuItem_title;
-        private Panel divider;
+        public PictureBox icon;
+        public Label menuItem_title;
+      
+
         private Color bgColor;
 
 
@@ -32,77 +33,76 @@ namespace sjProj.UC
             BackColor = cl;
             Tag = null;
             Cursor = Cursors.Hand;
-
-            //this.MouseHover += (o, ev) =>
-            //{
-            //    if (Tag == null)
-            //    {
-            //        BackColor = Color.FromArgb(255, 70, 70, 70);
-            //        icon.BackColor = Color.FromArgb(255, 70, 70, 70);
-            //    }
-            //};
-
-            //this.MouseLeave += (o, ev) =>
-            //{
-
-            //    if (Tag == null)
-            //    {
-            //        BackColor = cl;
-            //        icon.BackColor = cl;
-            //    }
-            //};
+            
 
 
             icon = new PictureBox()
             {
                 Image = img,
                 SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 20,
-                Height = 20,
+                Width = 26,
+                Height = 26,
                 BackColor = cl,
                 Parent = this,
-                Location = new Point(10 , Height / 2 - 10 )
+                Location = new Point( Width / 2 - 13 , Height / 2 - 26),
+                Name = "icon",
+                
             };
 
             menuItem_title = new Label()
             {
                 Text = title,
                 Parent = this,
-                ForeColor = Color.White,
-                Font = new Font("tahoma", 12F, FontStyle.Bold , GraphicsUnit.Pixel),
-                Location = new Point(15 + icon.Width , Height / 2 - 6 )
+                ForeColor = Color.Silver,
+                
+                Font = new Font("tahoma", 11F, FontStyle.Regular, GraphicsUnit.Pixel),
+                Location = new Point(0 , Height / 2 + 5),
+                Name = "title",
+                Width = Width,
+                TextAlign = ContentAlignment.MiddleCenter,
+                
+
             };
 
-            divider = new Panel()
-            {
-                Size = new Size(w, 1),
-                Dock = DockStyle.Bottom,
-                BackColor = Color.DimGray,
-                Parent = this
-            };
+            //divider = new Panel()
+            //{
+            //    Size = new Size(w, 1),
+            //    Dock = DockStyle.Bottom,
+            //    BackColor = Color.DimGray,
+            //    Parent = this,
+            //    Name = "divider"
+
+            //};
 
             #region Events
 
 
             // event dyal this = usercontrol
             this.Click += myClick;
-            this.MouseHover += myHover;
+            this.MouseEnter += myEnter;
             this.MouseLeave += myLeave;
+            //this.MouseMove += myMove;
+
 
             // events dyal icon | picturebox
             icon.Click += myClick;
-            icon.MouseHover += myHover;
+            icon.MouseEnter += myEnter;
             icon.MouseLeave += myLeave;
+            //icon.MouseMove += myMove;
 
             // events dyal Label | 
             menuItem_title.Click += myClick;
-            menuItem_title.MouseHover += myHover;
+            menuItem_title.MouseEnter += myEnter;
             menuItem_title.MouseLeave += myLeave;
+            //menuItem_title.MouseMove += myMove;
 
             // events dyal Panel > divider
-            divider.Click += myClick;
-            divider.MouseHover += myHover;
-            divider.MouseLeave += myLeave;
+            //divider.Click += myClick;
+            //divider.MouseEnter += myEnter;
+            //divider.MouseLeave += myLeave;
+            //divider.MouseMove += myMove;
+
+
 
 
             #endregion
@@ -136,7 +136,7 @@ namespace sjProj.UC
                 if (ctr.Parent.Tag == null)
                 {
                     ctr.Parent.Tag = "clicked";
-                    ctr.Parent.BackColor = Color.DarkGray;
+                    ctr.Parent.BackColor = Color.FromArgb(255, 20, 20, 20);
                     icon.BackColor = Color.Transparent;
                 }
             }
@@ -146,15 +146,20 @@ namespace sjProj.UC
                 if (ctr.Tag == null)
                 {
                     ctr.Tag = "clicked";
-                    ctr.BackColor = Color.DarkGray;
+                    ctr.BackColor = Color.FromArgb(255, 20 ,20, 20);
                     icon.BackColor = Color.Transparent;
 
                 }
             }
         }
 
-        private void myHover(object o, EventArgs e)
+        private void myEnter(object o, EventArgs e)
         {
+            //if (!Properties.Settings.Default.isHovered) MyHoverHandler?.Invoke(this, new EventArgs());
+
+        
+
+
             Control ctr = o as Control;
             bool hasParent = ctr.Equals(this) ? false : true;
 
@@ -178,6 +183,8 @@ namespace sjProj.UC
 
         private void myLeave(object o, EventArgs e)
         {
+            //if (Properties.Settings.Default.isHovered) MyLeaveHandler?.Invoke(this, new EventArgs());
+
             Control ctr = o as Control;
             bool hasParent = ctr.Equals(this) ? false : true;
 

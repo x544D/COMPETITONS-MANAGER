@@ -4,5 +4,5 @@ to do :
 
 	-	GLOBALITY.cs > class : _Configs > proto : public static void CheckForUpdates(Version currentV);
 
-
+	-	SearchInput aka TextBox in TitlePanel : We will have to check a minimum screen width to either decide to show it or not ! 
 
